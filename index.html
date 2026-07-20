@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>文见 · Visual Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════
+   NORDIC STUDIO — 文见
+   北欧极简 · 大量留白 · 纹样横向滑动 · 作品轮播
+   ═══════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+::root{
+    --bg:#F9F6F0;--fg:#1B1B1B;--fg-s:#4A4A4A;--mu:#9E9E9E;
+    --bd:#E8E3DA;--ac:#C2613A;--wm:#F0EBE1;--cd:#FDFBF7;
+    --shadow:0 2px 16px rgba(0,0,0,.06);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+    font-family:"Noto Sans SC","Inter",-apple-system,sans-serif;
+    color:var(--fg);background:var(--bg);
+    line-height:1.65;font-weight:300;
+    -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+}
+img{display:block}
+a{color:var(--ac);text-decoration:none;transition:opacity .3s}
+a:hover{opacity:.55}
+::selection{background:var(--ac);color:#fff}
+
+/* ── LAYOUT ──────────────────────────────────────── */
+.container{max-width:1200px;margin:0 auto;padding:0 6vw}
+@media(max-width:768px){.container{padding:0 5vw}}
+
+/* ── NAV ─────────────────────────────────────────── */
+nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(249,246,240,.94);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid transparent;
+    transition:border-color .4s;
+}
+nav.scrolled{border-bottom-color:var(--bd)}
+nav .container{
+    display:flex;align-items:center;justify-content:space-between;
+    height:60px;
+}
+.nav-brand{font-size:.85rem;font-weight:600;letter-spacing:.14em;color:var(--fg)}
+.nav-links{display:flex;gap:32px}
+.nav-links a{
+    font-size:.7rem;font-weight:400;color:var(--mu);
+    letter-spacing:.1em;text-transform:uppercase;
+    transition:color .3s;position:relative;
+}
+.nav-links a::after{
+    content:"";position:absolute;bottom:-3px;left:0;
+    width:0;height:1px;background:var(--fg);transition:width .3s;
+}
+.nav-links a:hover{color:var(--fg)}
+.nav-links a:hover::after{width:100%}
+@media(max-width:640px){.nav-links{gap:16px}.nav-links a{font-size:.65rem}}
+
+/* ── HERO ────────────────────────────────────────── */
+.hero{
+    padding:160px 0 100px;text-align:center;
+}
+.hero-title-main{
+    font-family:"Inter",sans-serif;
+    font-size:clamp(3.8rem,8vw,6.5rem);font-weight:700;
+    letter-spacing:.08em;line-height:1;color:var(--fg);
+    text-transform:uppercase;
+}
+.hero-title-sub{
+    font-size:clamp(1.2rem,2.5vw,1.6rem);font-weight:400;
+    color:var(--mu);letter-spacing:.14em;margin-top:8px;
+}
+.hero .rule{width:36px;height:1px;background:var(--ac);margin:32px auto 0}
+.hero .meta{
+    margin-top:20px;font-size:.68rem;color:var(--mu);
+    letter-spacing:.1em;
+}
+.hero .meta span{opacity:.65}
+.hero .meta span + span::before{content:" / ";margin:0 10px;opacity:.3}
+@media(max-width:640px){
+    .hero{padding:130px 0 60px}
+    .hero-title-main{font-size:2.8rem}
+    .hero-title-sub{font-size:1rem}
+}
+
+/* ── SECTION HEAD ────────────────────────────────── */
+.section-head{text-align:center;margin-bottom:80px}
+.section-head .idx{
+    font-family:"Inter",sans-serif;
+    font-size:.55rem;font-weight:500;letter-spacing:.22em;
+    color:var(--ac);margin-bottom:16px;text-transform:uppercase;
+}
+.section-head h2{
+    font-size:clamp(1.9rem,3.5vw,2.6rem);font-weight:700;
+    letter-spacing:.02em;margin-bottom:10px;
+}
+.section-head .desc{
+    font-size:.78rem;color:var(--mu);font-weight:300;letter-spacing:.06em;
+}
+.section-head .rule{width:18px;height:1px;background:var(--ac);margin:18px auto 0}
+
+/* ── ABOUT ───────────────────────────────────────── */
+#about{padding:100px 0;background:var(--wm)}
+.about-grid{
+    display:grid;grid-template-columns:220px 1fr;gap:72px;align-items:start;
+}
+@media(max-width:768px){
+    .about-grid{grid-template-columns:1fr;gap:32px;justify-items:center;text-align:center}
+}
+.about-photo{
+    position:relative;
+}
+.about-photo img{
+    width:200px;height:200px;border-radius:50%;object-fit:cover;
+    box-shadow:0 4px 24px rgba(0,0,0,.08);
+    border:3px solid #fff;
+    transition:transform .4s cubic-bezier(0.25,0.1,0.25,1);
+}
+.about-photo img:hover{transform:scale(1.03)}
+.about-photo::after{
+    content:"";position:absolute;inset:-8px;border-radius:50%;
+    border:1px solid var(--bd);pointer-events:none;
+}
+.about-text .intro{
+    font-size:1.02rem;line-height:2.1;margin-bottom:36px;color:var(--fg-s);
+}
+.about-tags{
+    display:flex;flex-wrap:wrap;gap:6px;margin-bottom:44px;
+}
+.about-tags span{
+    font-family:"Inter",sans-serif;font-size:.62rem;font-weight:400;
+    letter-spacing:.08em;padding:5px 12px;border:1px solid var(--bd);
+    color:var(--mu);text-transform:uppercase;
+    transition:all .25s;
+}
+.about-tags span:hover{border-color:var(--fg-s);color:var(--fg-s)}
+
+/* ── EXPERIENCE ──────────────────────────────────── */
+.exp-label{
+    font-family:"Inter",sans-serif;font-size:.58rem;font-weight:600;
+    letter-spacing:.16em;color:var(--mu);
+    text-transform:uppercase;margin-bottom:24px;
+}
+.exp-list{display:flex;flex-direction:column;gap:18px}
+.exp-item{
+    padding:0 0 14px 0;border-bottom:1px solid var(--bd);
+    opacity:0;transition:opacity .7s;
+}
+.exp-item.visible{opacity:1}
+.exp-item:last-child{border-bottom:none;padding-bottom:0}
+.exp-period{
+    font-family:"Inter",sans-serif;font-size:.62rem;font-weight:500;
+    letter-spacing:.06em;color:var(--ac);margin-bottom:2px;
+}
+.exp-company{font-size:.85rem;font-weight:500;margin-bottom:2px}
+.exp-duty{font-size:.76rem;color:var(--mu);font-weight:300;line-height:1.7}
+
+/* ── PATTERNS: 横向滑动 ─────────────────────────── */
+#patterns{padding:110px 0}
+.dynasty-row{
+    margin-bottom:80px;position:relative;
+}
+.dynasty-row:last-child{margin-bottom:0}
+.dynasty-row-head{
+    margin-bottom:20px;padding:0 0 0 1px;
+}
+.dynasty-row-head h4{
+    font-size:1.05rem;font-weight:600;letter-spacing:.04em;
+    margin-bottom:4px;display:inline-block;
+}
+.dynasty-row-head p{
+    font-size:.72rem;color:var(--mu);font-weight:300;
+    display:inline-block;margin-left:16px;
+}
+@media(max-width:640px){
+    .dynasty-row-head p{display:block;margin-left:0;margin-top:2px}
+}
+
+/* 横向滑动容器 */
+.wy-scroll{
+    display:flex;gap:14px;overflow-x:auto;padding:4px 0 8px 0;
+    scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+    cursor:grab;
+    -ms-overflow-style:none;scrollbar-width:none;
+}
+.wy-scroll:active{cursor:grabbing}
+.wy-scroll::-webkit-scrollbar{display:none}
+.wy-scroll::after{content:"";flex-shrink:0;width:1px}
+
+.wy-card{
+    flex-shrink:0;width:clamp(140px,22vw,200px);
+    scroll-snap-align:start;
+    cursor:pointer;overflow:hidden;background:var(--cd);
+    position:relative;transition:box-shadow .35s;
+    border-radius:1px;
+}
+.wy-card:hover{box-shadow:var(--shadow)}
+.wy-card img{
+    width:100%;aspect-ratio:3/4;object-fit:cover;
+    transition:transform .6s cubic-bezier(0.25,0.1,0.25,1);
+}
+.wy-card:hover img{transform:scale(1.05)}
+.wy-card-label{
+    position:absolute;bottom:0;left:0;right:0;
+    padding:6px 8px;font-size:.58rem;color:#fff;
+    background:linear-gradient(transparent,rgba(0,0,0,.55));
+    opacity:0;transition:opacity .3s;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.wy-card:hover .wy-card-label{opacity:1}
+
+/* ── CAROUSEL SECTION ────────────────────────────── */
+#works{padding:0 0 120px 0;overflow:hidden}
+.cat-filter{
+    display:flex;justify-content:center;flex-wrap:wrap;
+    gap:8px;margin-bottom:48px;
+}
+.cat-btn{
+    font-family:"Inter",sans-serif;font-size:.62rem;font-weight:400;
+    letter-spacing:.08em;padding:8px 18px;border:1px solid var(--bd);
+    background:transparent;color:var(--mu);cursor:pointer;
+    text-transform:uppercase;transition:all .25s;border-radius:0;
+}
+.cat-btn:hover,.cat-btn.active{
+    border-color:var(--fg);color:var(--fg);background:transparent;
+}
+
+.carousel-wrapper{
+    position:relative;max-width:1000px;margin:0 auto;
+}
+.carousel-stage{
+    position:relative;overflow:hidden;background:var(--cd);
+    aspect-ratio:16/9;border-radius:2px;
+    box-shadow:var(--shadow);margin-bottom:20px;
+}
+.carousel-item{
+    position:absolute;inset:0;display:flex;align-items:center;
+    justify-content:center;opacity:0;transition:opacity .5s ease;
+}
+.carousel-item.active{opacity:1;z-index:1}
+.carousel-item img{
+    width:100%;height:100%;object-fit:contain;
+}
+.carousel-item .carousel-num{
+    position:absolute;bottom:12px;right:16px;
+    font-family:"Inter",sans-serif;font-size:.6rem;
+    color:rgba(255,255,255,.6);background:rgba(0,0,0,.25);
+    padding:2px 10px;border-radius:2px;letter-spacing:.06em;
+}
+.carousel-arrow{
+    position:absolute;top:50%;transform:translateY(-50%);
+    z-index:10;width:48px;height:48px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,.85);border:none;cursor:pointer;
+    border-radius:50%;font-size:1.3rem;color:var(--fg-s);
+    transition:all .25s;box-shadow:0 1px 6px rgba(0,0,0,.08);
+}
+.carousel-arrow:hover{background:#fff;color:var(--fg);box-shadow:0 2px 12px rgba(0,0,0,.12)}
+.carousel-arrow.prev{left:-60px}
+.carousel-arrow.next{right:-60px}
+@media(max-width:1140px){
+    .carousel-arrow.prev{left:8px}
+    .carousel-arrow.next{right:8px}
+}
+.thumb-strip{
+    display:flex;gap:8px;overflow-x:auto;padding:4px 0;
+    scroll-behavior:smooth;
+    -ms-overflow-style:none;scrollbar-width:none;
+}
+.thumb-strip::-webkit-scrollbar{display:none}
+.thumb-item{
+    flex-shrink:0;cursor:pointer;opacity:.45;
+    transition:opacity .3s;border:2px solid transparent;
+    width:100px;height:56px;overflow:hidden;border-radius:2px;
+}
+.thumb-item:hover,.thumb-item.active{
+    opacity:1;border-color:var(--ac);
+}
+.thumb-item img{width:100%;height:100%;object-fit:cover}
+.carousel-counter{
+    text-align:center;margin-top:16px;
+    font-family:"Inter",sans-serif;font-size:.65rem;
+    color:var(--mu);letter-spacing:.08em;
+}
+
+/* ── CONTACT ─────────────────────────────────────── */
+#contact{
+    padding:100px 0;background:var(--fg);
+    color:rgba(255,255,255,.55);text-align:center;
+}
+#contact h2{color:#fff;font-size:1.8rem;font-weight:700;letter-spacing:.04em;margin-bottom:32px}
+.contact-info{
+    display:flex;justify-content:center;gap:44px;flex-wrap:wrap;
+    font-size:.8rem;font-weight:300;letter-spacing:.04em;
+}
+.contact-info a{color:rgba(255,255,255,.75)}
+.contact-info a:hover{color:#fff;opacity:1}
+@media(max-width:640px){.contact-info{flex-direction:column;gap:14px}}
+
+/* ── FOOTER ──────────────────────────────────────── */
+footer{text-align:center;padding:30px 0;font-size:.66rem;color:var(--mu);font-weight:300;letter-spacing:.06em}
+
+/* ── LIGHTBOX ────────────────────────────────────── */
+.lightbox{
+    display:none;position:fixed;inset:0;z-index:9999;
+    background:rgba(8,8,8,.97);cursor:zoom-out;
+    align-items:center;justify-content:center;
+}
+.lightbox.active{display:flex}
+.lightbox img{max-width:94vw;max-height:94vh;object-fit:contain}
+.lb-close{
+    position:fixed;top:20px;right:24px;z-index:10000;
+    font-size:1.8rem;font-weight:100;color:rgba(255,255,255,.4);
+    cursor:pointer;width:44px;height:44px;display:flex;
+    align-items:center;justify-content:center;border-radius:50%;
+    transition:all .25s;
+}
+.lb-close:hover{color:#fff;background:rgba(255,255,255,.05)}
+
+/* ── FADE IN ─────────────────────────────────────── */
+.fade-in{opacity:0;transition:opacity .8s ease}
+.fade-in.visible{opacity:1}
+
+@media(max-width:640px){
+    .section-head{margin-bottom:48px}
+    .section-head h2{font-size:1.6rem}
+    #about{padding:64px 0}#patterns{padding:72px 0}#works{padding:0 0 72px 0}
+    .thumb-item{width:64px;height:36px}
+    .dynasty-row{margin-bottom:56px}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+    <div class="container">
+        <span class="nav-brand">文见</span>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#patterns">Patterns</a>
+            <a href="#works">Works</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="lb-close">&times;</span>
+    <img id="lb-img" src="" alt="">
+</div>
+
+<!-- ═══════════ HERO ═══════════ -->
+<header class="hero container">
+    <h1 class="hero-title-main">Visual<br>Designer</h1>
+    <p class="hero-title-sub">视觉设计 · 传统纹样研究</p>
+    <div class="rule"></div>
+    <p class="meta"><span>贾育龙</span><span>山西晋城</span><span>现居北京</span></p>
+</header>
+
+<!-- ═══════════ ABOUT ═══════════ -->
+<section id="about">
+<div class="container about-grid">
+    <div class="about-photo"><img src="static/photo.jpg" alt="文见"></div>
+    <div class="about-text">
+        <p class="intro">视觉设计师，7年经验。专注字体设计、版式编排、图案创作、包装与品牌视觉。熟悉印刷工艺，具备独立文案能力。长期研究中国传统纹样——从xinshi器彩陶到qing吉祥图案，持续输出纹样视觉内容。</p>
+        <div class="about-tags">
+            <span>Typography</span><span>Layout</span><span>Pattern</span><span>Packaging</span><span>Branding</span><span>Print</span><span>Research</span>
+        </div>
+        <div class="exp-section">
+            <p class="exp-label">Experience</p>
+            <div class="exp-list">
+                <div class="exp-item">
+                    <p class="exp-period">2023.10 – 2025.02</p>
+                    <p class="exp-company">中藜高科（北京）</p>
+                    <p class="exp-duty">藜麦产品线包装设计与品牌视觉迭代，跟进打样与印刷落地。</p>
+                </div>
+                <div class="exp-item">
+                    <p class="exp-period">2021.04 – 2023.07</p>
+                    <p class="exp-company">北京外企元隆文化</p>
+                    <p class="exp-duty">企业礼品与文创产品包装设计，参与客户提案、结构打样与生产对接。</p>
+                </div>
+                <div class="exp-item">
+                    <p class="exp-period">2020.07 – 2021.02</p>
+                    <p class="exp-company">鬼石国际品牌设计顾问</p>
+                    <p class="exp-duty">品牌视觉与包装结构设计，包含 Logo、VI 延展及物料规范制定。</p>
+                </div>
+                <div class="exp-item">
+                    <p class="exp-period">2019.08 – 2020.05</p>
+                    <p class="exp-company">凡恩优力国际广告</p>
+                    <p class="exp-duty">广告视觉与品牌物料输出，配合团队完成线上线下营销素材。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- ═══════════ PATTERNS · 横向滑动 ═══════════ -->
+<section id="patterns">
+<div class="container">
+    <div class="section-head">
+        <p class="idx">01 · Research</p>
+        <h2>纹样研究</h2>
+        <p class="desc">Pattern Archive · xinshi器至明清</p>
+        <div class="rule"></div>
+    </div>
+        <div class="dynasty-row fade-in">
+            <div class="dynasty-row-head">
+                <h4>xinshi器时代</h4>
+                <p>仰韶·马家窑·良渚——朴拙天真，最早的装饰意识</p>
+            </div>
+            <div class="wy-scroll">
+                    <div class="wy-card" onclick="openLightbox('static/wy-00-xinshi0.jpg')">
+                        <img src="static/wy-00-xinshi0.jpg" alt="夏家店文化-01" loading="lazy">
+                        <span class="wy-card-label">夏家店文化-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-01-xinshi1.jpg')">
+                        <img src="static/wy-01-xinshi1.jpg" alt="大汶口文化-01" loading="lazy">
+                        <span class="wy-card-label">大汶口文化-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-02-xinshi2.jpg')">
+                        <img src="static/wy-02-xinshi2.jpg" alt="大溪文化-01" loading="lazy">
+                        <span class="wy-card-label">大溪文化-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-03-xinshi3.jpg')">
+                        <img src="static/wy-03-xinshi3.jpg" alt="河姆渡文化-01" loading="lazy">
+                        <span class="wy-card-label">河姆渡文化-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-04-xinshi4.jpg')">
+                        <img src="static/wy-04-xinshi4.jpg" alt="良渚文化-01" loading="lazy">
+                        <span class="wy-card-label">良渚文化-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-05-xinshi5.jpg')">
+                        <img src="static/wy-05-xinshi5.jpg" alt="辛店文化-01" loading="lazy">
+                        <span class="wy-card-label">辛店文化-01</span>
+                    </div>
+            </div>
+        </div>
+        <div class="dynasty-row fade-in">
+            <div class="dynasty-row-head">
+                <h4>shangzhou时期</h4>
+                <p>饕餮夔龙·神秘威严——青铜时代的狞厉之美</p>
+            </div>
+            <div class="wy-scroll">
+                    <div class="wy-card" onclick="openLightbox('static/wy-00-shangzhou0.jpg')">
+                        <img src="static/wy-00-shangzhou0.jpg" alt="二里冈文化-01" loading="lazy">
+                        <span class="wy-card-label">二里冈文化-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-01-shangzhou1.jpg')">
+                        <img src="static/wy-01-shangzhou1.jpg" alt="商代前期-01" loading="lazy">
+                        <span class="wy-card-label">商代前期-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-02-shangzhou2.jpg')">
+                        <img src="static/wy-02-shangzhou2.jpg" alt="商代后期-01" loading="lazy">
+                        <span class="wy-card-label">商代后期-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-03-shangzhou3.jpg')">
+                        <img src="static/wy-03-shangzhou3.jpg" alt="商代后期-01" loading="lazy">
+                        <span class="wy-card-label">商代后期-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-04-shangzhou4.jpg')">
+                        <img src="static/wy-04-shangzhou4.jpg" alt="商代后期三-01" loading="lazy">
+                        <span class="wy-card-label">商代后期三-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-05-shangzhou5.jpg')">
+                        <img src="static/wy-05-shangzhou5.jpg" alt="商代后期五-01" loading="lazy">
+                        <span class="wy-card-label">商代后期五-01</span>
+                    </div>
+            </div>
+        </div>
+        <div class="dynasty-row fade-in">
+            <div class="dynasty-row-head">
+                <h4>chunqiu战国时期</h4>
+                <p>蟠螭蟠虺·错彩镂金——百家争鸣的绚烂</p>
+            </div>
+            <div class="wy-scroll">
+                    <div class="wy-card" onclick="openLightbox('static/wy-00-chunqiu0.jpg')">
+                        <img src="static/wy-00-chunqiu0.jpg" alt="chunqiu中期-01" loading="lazy">
+                        <span class="wy-card-label">chunqiu中期-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-01-chunqiu1.jpg')">
+                        <img src="static/wy-01-chunqiu1.jpg" alt="chunqiu早期（一）-01" loading="lazy">
+                        <span class="wy-card-label">chunqiu早期（一）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-02-chunqiu2.jpg')">
+                        <img src="static/wy-02-chunqiu2.jpg" alt="chunqiu时期（三）-01" loading="lazy">
+                        <span class="wy-card-label">chunqiu时期（三）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-03-chunqiu3.jpg')">
+                        <img src="static/wy-03-chunqiu3.jpg" alt="chunqiu时期（二）-01" loading="lazy">
+                        <span class="wy-card-label">chunqiu时期（二）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-04-chunqiu4.jpg')">
+                        <img src="static/wy-04-chunqiu4.jpg" alt="chunqiu晚期（一）-01" loading="lazy">
+                        <span class="wy-card-label">chunqiu晚期（一）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-05-chunqiu5.jpg')">
+                        <img src="static/wy-05-chunqiu5.jpg" alt="chunqiu晚期（三）-01" loading="lazy">
+                        <span class="wy-card-label">chunqiu晚期（三）-01</span>
+                    </div>
+            </div>
+        </div>
+        <div class="dynasty-row fade-in">
+            <div class="dynasty-row-head">
+                <h4>qin</h4>
+                <p>大一统的秩序感——简洁雄浑的秦风</p>
+            </div>
+            <div class="wy-scroll">
+                    <div class="wy-card" onclick="openLightbox('static/wy-00-qin0.jpg')">
+                        <img src="static/wy-00-qin0.jpg" alt="qin分享一-01" loading="lazy">
+                        <span class="wy-card-label">qin分享一-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-01-qin1.jpg')">
+                        <img src="static/wy-01-qin1.jpg" alt="qin分享二-01" loading="lazy">
+                        <span class="wy-card-label">qin分享二-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-02-qin2.jpg')">
+                        <img src="static/wy-02-qin2.jpg" alt="qin分享一-02" loading="lazy">
+                        <span class="wy-card-label">qin分享一-02</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-03-qin3.jpg')">
+                        <img src="static/wy-03-qin3.jpg" alt="qin分享一-03" loading="lazy">
+                        <span class="wy-card-label">qin分享一-03</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-04-qin4.jpg')">
+                        <img src="static/wy-04-qin4.jpg" alt="qin分享一-04" loading="lazy">
+                        <span class="wy-card-label">qin分享一-04</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-05-qin5.jpg')">
+                        <img src="static/wy-05-qin5.jpg" alt="qin分享一-05" loading="lazy">
+                        <span class="wy-card-label">qin分享一-05</span>
+                    </div>
+            </div>
+        </div>
+        <div class="dynasty-row fade-in">
+            <div class="dynasty-row-head">
+                <h4>xihan</h4>
+                <p>云气升腾·羽人神兽——汉的浪漫与升仙</p>
+            </div>
+            <div class="wy-scroll">
+                    <div class="wy-card" onclick="openLightbox('static/wy-00-xihan0.jpg')">
+                        <img src="static/wy-00-xihan0.jpg" alt="xihan中期-01" loading="lazy">
+                        <span class="wy-card-label">xihan中期-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-01-xihan1.jpg')">
+                        <img src="static/wy-01-xihan1.jpg" alt="xihan中期（二）-01" loading="lazy">
+                        <span class="wy-card-label">xihan中期（二）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-02-xihan2.jpg')">
+                        <img src="static/wy-02-xihan2.jpg" alt="xihan早期分享一-01" loading="lazy">
+                        <span class="wy-card-label">xihan早期分享一-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-03-xihan3.jpg')">
+                        <img src="static/wy-03-xihan3.jpg" alt="xihan晚期（一）-01" loading="lazy">
+                        <span class="wy-card-label">xihan晚期（一）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-04-xihan4.jpg')">
+                        <img src="static/wy-04-xihan4.jpg" alt="xihan中期-02" loading="lazy">
+                        <span class="wy-card-label">xihan中期-02</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-05-xihan5.jpg')">
+                        <img src="static/wy-05-xihan5.jpg" alt="xihan中期-03" loading="lazy">
+                        <span class="wy-card-label">xihan中期-03</span>
+                    </div>
+            </div>
+        </div>
+        <div class="dynasty-row fade-in">
+            <div class="dynasty-row-head">
+                <h4>donghan</h4>
+                <p>车马宴乐·神仙天国——画像砖石上的世俗愿景</p>
+            </div>
+            <div class="wy-scroll">
+                    <div class="wy-card" onclick="openLightbox('static/wy-00-donghan0.jpg')">
+                        <img src="static/wy-00-donghan0.jpg" alt="donghan分享（一）-01" loading="lazy">
+                        <span class="wy-card-label">donghan分享（一）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-01-donghan1.jpg')">
+                        <img src="static/wy-01-donghan1.jpg" alt="donghan分享（七）-01" loading="lazy">
+                        <span class="wy-card-label">donghan分享（七）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-02-donghan2.jpg')">
+                        <img src="static/wy-02-donghan2.jpg" alt="donghan分享（三）-01" loading="lazy">
+                        <span class="wy-card-label">donghan分享（三）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-03-donghan3.jpg')">
+                        <img src="static/wy-03-donghan3.jpg" alt="donghan分享（九）-01" loading="lazy">
+                        <span class="wy-card-label">donghan分享（九）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-04-donghan4.jpg')">
+                        <img src="static/wy-04-donghan4.jpg" alt="donghan分享（二）-01" loading="lazy">
+                        <span class="wy-card-label">donghan分享（二）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-05-donghan5.jpg')">
+                        <img src="static/wy-05-donghan5.jpg" alt="donghan分享（五）-01" loading="lazy">
+                        <span class="wy-card-label">donghan分享（五）-01</span>
+                    </div>
+            </div>
+        </div>
+        <div class="dynasty-row fade-in">
+            <div class="dynasty-row-head">
+                <h4>sanguo时期</h4>
+                <p>乱世延续——承汉启晋的纹样过渡</p>
+            </div>
+            <div class="wy-scroll">
+                    <div class="wy-card" onclick="openLightbox('static/wy-00-sanguo0.jpg')">
+                        <img src="static/wy-00-sanguo0.jpg" alt="sanguo分享（一）-01" loading="lazy">
+                        <span class="wy-card-label">sanguo分享（一）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-01-sanguo1.jpg')">
+                        <img src="static/wy-01-sanguo1.jpg" alt="sanguo分享（二）-01" loading="lazy">
+                        <span class="wy-card-label">sanguo分享（二）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-02-sanguo2.jpg')">
+                        <img src="static/wy-02-sanguo2.jpg" alt="sanguo分享（一）-02" loading="lazy">
+                        <span class="wy-card-label">sanguo分享（一）-02</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-03-sanguo3.jpg')">
+                        <img src="static/wy-03-sanguo3.jpg" alt="sanguo分享（一）-03" loading="lazy">
+                        <span class="wy-card-label">sanguo分享（一）-03</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-04-sanguo4.jpg')">
+                        <img src="static/wy-04-sanguo4.jpg" alt="sanguo分享（一）-04" loading="lazy">
+                        <span class="wy-card-label">sanguo分享（一）-04</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-05-sanguo5.jpg')">
+                        <img src="static/wy-05-sanguo5.jpg" alt="sanguo分享（一）-05" loading="lazy">
+                        <span class="wy-card-label">sanguo分享（一）-05</span>
+                    </div>
+            </div>
+        </div>
+        <div class="dynasty-row fade-in">
+            <div class="dynasty-row-head">
+                <h4>weijin南北朝</h4>
+                <p>莲花忍冬·飞天藻井——佛教东渐的视觉融合</p>
+            </div>
+            <div class="wy-scroll">
+                    <div class="wy-card" onclick="openLightbox('static/wy-00-weijin0.jpg')">
+                        <img src="static/wy-00-weijin0.jpg" alt="weijin南北朝（一）-01" loading="lazy">
+                        <span class="wy-card-label">weijin南北朝（一）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-01-weijin1.jpg')">
+                        <img src="static/wy-01-weijin1.jpg" alt="weijin南北朝（七）-01" loading="lazy">
+                        <span class="wy-card-label">weijin南北朝（七）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-02-weijin2.jpg')">
+                        <img src="static/wy-02-weijin2.jpg" alt="weijin南北朝（三）-01" loading="lazy">
+                        <span class="wy-card-label">weijin南北朝（三）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-03-weijin3.jpg')">
+                        <img src="static/wy-03-weijin3.jpg" alt="weijin南北朝（九）-01" loading="lazy">
+                        <span class="wy-card-label">weijin南北朝（九）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-04-weijin4.jpg')">
+                        <img src="static/wy-04-weijin4.jpg" alt="weijin南北朝（二十一）-01" loading="lazy">
+                        <span class="wy-card-label">weijin南北朝（二十一）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-05-weijin5.jpg')">
+                        <img src="static/wy-05-weijin5.jpg" alt="weijin南北朝（二十三）-01" loading="lazy">
+                        <span class="wy-card-label">weijin南北朝（二十三）-01</span>
+                    </div>
+            </div>
+        </div>
+        <div class="dynasty-row fade-in">
+            <div class="dynasty-row-head">
+                <h4>suitang时期</h4>
+                <p>宝相花·卷草纹——大唐的华美与开放</p>
+            </div>
+            <div class="wy-scroll">
+                    <div class="wy-card" onclick="openLightbox('static/wy-00-suitang0.jpg')">
+                        <img src="static/wy-00-suitang0.jpg" alt="suitang时期（一）-01" loading="lazy">
+                        <span class="wy-card-label">suitang时期（一）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-01-suitang1.jpg')">
+                        <img src="static/wy-01-suitang1.jpg" alt="suitang时期（七）-01" loading="lazy">
+                        <span class="wy-card-label">suitang时期（七）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-02-suitang2.jpg')">
+                        <img src="static/wy-02-suitang2.jpg" alt="suitang时期（三十）-01" loading="lazy">
+                        <span class="wy-card-label">suitang时期（三十）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-03-suitang3.jpg')">
+                        <img src="static/wy-03-suitang3.jpg" alt="suitang时期（三）-01" loading="lazy">
+                        <span class="wy-card-label">suitang时期（三）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-04-suitang4.jpg')">
+                        <img src="static/wy-04-suitang4.jpg" alt="suitang时期（九）-01" loading="lazy">
+                        <span class="wy-card-label">suitang时期（九）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-05-suitang5.jpg')">
+                        <img src="static/wy-05-suitang5.jpg" alt="suitang时期（二十一）-01" loading="lazy">
+                        <span class="wy-card-label">suitang时期（二十一）-01</span>
+                    </div>
+            </div>
+        </div>
+        <div class="dynasty-row fade-in">
+            <div class="dynasty-row-head">
+                <h4>liangsong时期</h4>
+                <p>折枝花鸟·写生自然——宋的雅致内敛</p>
+            </div>
+            <div class="wy-scroll">
+                    <div class="wy-card" onclick="openLightbox('static/wy-00-liangsong0.jpg')">
+                        <img src="static/wy-00-liangsong0.jpg" alt="liangsong时期-01" loading="lazy">
+                        <span class="wy-card-label">liangsong时期-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-01-liangsong1.jpg')">
+                        <img src="static/wy-01-liangsong1.jpg" alt="liangsong时期（七）-01" loading="lazy">
+                        <span class="wy-card-label">liangsong时期（七）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-02-liangsong2.jpg')">
+                        <img src="static/wy-02-liangsong2.jpg" alt="liangsong时期（三）-01" loading="lazy">
+                        <span class="wy-card-label">liangsong时期（三）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-03-liangsong3.jpg')">
+                        <img src="static/wy-03-liangsong3.jpg" alt="liangsong时期（九）-01" loading="lazy">
+                        <span class="wy-card-label">liangsong时期（九）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-04-liangsong4.jpg')">
+                        <img src="static/wy-04-liangsong4.jpg" alt="liangsong时期（二十一）-01" loading="lazy">
+                        <span class="wy-card-label">liangsong时期（二十一）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-05-liangsong5.jpg')">
+                        <img src="static/wy-05-liangsong5.jpg" alt="liangsong时期（二十七）-01" loading="lazy">
+                        <span class="wy-card-label">liangsong时期（二十七）-01</span>
+                    </div>
+            </div>
+        </div>
+        <div class="dynasty-row fade-in">
+            <div class="dynasty-row-head">
+                <h4>yuan</h4>
+                <p>多元融合——蒙古风情与汉地交辉</p>
+            </div>
+            <div class="wy-scroll">
+                    <div class="wy-card" onclick="openLightbox('static/wy-00-yuan0.jpg')">
+                        <img src="static/wy-00-yuan0.jpg" alt="chunqiu晚期（一）-01" loading="lazy">
+                        <span class="wy-card-label">chunqiu晚期（一）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-01-yuan1.jpg')">
+                        <img src="static/wy-01-yuan1.jpg" alt="yuan（七）-01" loading="lazy">
+                        <span class="wy-card-label">yuan（七）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-02-yuan2.jpg')">
+                        <img src="static/wy-02-yuan2.jpg" alt="yuan（三）-01" loading="lazy">
+                        <span class="wy-card-label">yuan（三）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-03-yuan3.jpg')">
+                        <img src="static/wy-03-yuan3.jpg" alt="yuan（二）-01" loading="lazy">
+                        <span class="wy-card-label">yuan（二）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-04-yuan4.jpg')">
+                        <img src="static/wy-04-yuan4.jpg" alt="yuan（五）-01" loading="lazy">
+                        <span class="wy-card-label">yuan（五）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-05-yuan5.jpg')">
+                        <img src="static/wy-05-yuan5.jpg" alt="yuan（六）-01" loading="lazy">
+                        <span class="wy-card-label">yuan（六）-01</span>
+                    </div>
+            </div>
+        </div>
+        <div class="dynasty-row fade-in">
+            <div class="dynasty-row-head">
+                <h4>ming</h4>
+                <p>缠枝莲·龙凤呈祥——明式的精致与规整</p>
+            </div>
+            <div class="wy-scroll">
+                    <div class="wy-card" onclick="openLightbox('static/wy-00-ming0.jpg')">
+                        <img src="static/wy-00-ming0.jpg" alt="weijin南北朝（一）-01" loading="lazy">
+                        <span class="wy-card-label">weijin南北朝（一）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-01-ming1.jpg')">
+                        <img src="static/wy-01-ming1.jpg" alt="ming（七）-01" loading="lazy">
+                        <span class="wy-card-label">ming（七）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-02-ming2.jpg')">
+                        <img src="static/wy-02-ming2.jpg" alt="ming（三）-01" loading="lazy">
+                        <span class="wy-card-label">ming（三）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-03-ming3.jpg')">
+                        <img src="static/wy-03-ming3.jpg" alt="ming（九）-01" loading="lazy">
+                        <span class="wy-card-label">ming（九）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-04-ming4.jpg')">
+                        <img src="static/wy-04-ming4.jpg" alt="ming（二）-01" loading="lazy">
+                        <span class="wy-card-label">ming（二）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-05-ming5.jpg')">
+                        <img src="static/wy-05-ming5.jpg" alt="ming（五）-01" loading="lazy">
+                        <span class="wy-card-label">ming（五）-01</span>
+                    </div>
+            </div>
+        </div>
+        <div class="dynasty-row fade-in">
+            <div class="dynasty-row-head">
+                <h4>qing</h4>
+                <p>集大成·繁缛富丽——吉祥纹样的世俗趣味</p>
+            </div>
+            <div class="wy-scroll">
+                    <div class="wy-card" onclick="openLightbox('static/wy-00-qing0.jpg')">
+                        <img src="static/wy-00-qing0.jpg" alt="qing（一）-01" loading="lazy">
+                        <span class="wy-card-label">qing（一）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-01-qing1.jpg')">
+                        <img src="static/wy-01-qing1.jpg" alt="qing（七）-01" loading="lazy">
+                        <span class="wy-card-label">qing（七）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-02-qing2.jpg')">
+                        <img src="static/wy-02-qing2.jpg" alt="qing（三十一）-01" loading="lazy">
+                        <span class="wy-card-label">qing（三十一）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-03-qing3.jpg')">
+                        <img src="static/wy-03-qing3.jpg" alt="qing（三十七）-01" loading="lazy">
+                        <span class="wy-card-label">qing（三十七）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-04-qing4.jpg')">
+                        <img src="static/wy-04-qing4.jpg" alt="qing（三十三）-01" loading="lazy">
+                        <span class="wy-card-label">qing（三十三）-01</span>
+                    </div>
+                    <div class="wy-card" onclick="openLightbox('static/wy-05-qing5.jpg')">
+                        <img src="static/wy-05-qing5.jpg" alt="qing（三十九）-01" loading="lazy">
+                        <span class="wy-card-label">qing（三十九）-01</span>
+                    </div>
+            </div>
+        </div>
+</div>
+</section>
+
+<!-- ═══════════ WORKS CAROUSEL ═══════════ -->
+<section id="works">
+<div class="container">
+    <div class="section-head">
+        <p class="idx">02 · Portfolio</p>
+        <h2>作品</h2>
+        <p class="desc">Selected Works · 品牌 · 包装 · 字体 · 图案 · 文创</p>
+        <div class="rule"></div>
+    </div>
+
+    <div class="cat-filter">
+        <button class="cat-btn active" data-cat="all">全部</button>
+        <button class="cat-btn" data-cat="品牌视觉">品牌视觉</button><button class="cat-btn" data-cat="包装设计">包装设计</button><button class="cat-btn" data-cat="字体排版">字体排版</button><button class="cat-btn" data-cat="图案创作">图案创作</button><button class="cat-btn" data-cat="文创产品">文创产品</button><button class="cat-btn" data-cat="纹样应用">纹样应用</button><button class="cat-btn" data-cat="其他">其他</button>
+    </div>
+
+    <div class="carousel-wrapper">
+        <div class="carousel-stage">
+                <div class="carousel-item active" data-index="0" data-cat="品牌视觉">
+                    <img src="static/wk-02.jpg" alt="作品 02" loading="eager">
+                    <span class="carousel-num">02</span>
+                </div>
+                <div class="carousel-item " data-index="1" data-cat="品牌视觉">
+                    <img src="static/wk-03.jpg" alt="作品 03" loading="lazy">
+                    <span class="carousel-num">03</span>
+                </div>
+                <div class="carousel-item " data-index="2" data-cat="品牌视觉">
+                    <img src="static/wk-04.jpg" alt="作品 04" loading="lazy">
+                    <span class="carousel-num">04</span>
+                </div>
+                <div class="carousel-item " data-index="3" data-cat="品牌视觉">
+                    <img src="static/wk-05.jpg" alt="作品 05" loading="lazy">
+                    <span class="carousel-num">05</span>
+                </div>
+                <div class="carousel-item " data-index="4" data-cat="品牌视觉">
+                    <img src="static/wk-06.jpg" alt="作品 06" loading="lazy">
+                    <span class="carousel-num">06</span>
+                </div>
+                <div class="carousel-item " data-index="5" data-cat="包装设计">
+                    <img src="static/wk-07.jpg" alt="作品 07" loading="lazy">
+                    <span class="carousel-num">07</span>
+                </div>
+                <div class="carousel-item " data-index="6" data-cat="包装设计">
+                    <img src="static/wk-08.jpg" alt="作品 08" loading="lazy">
+                    <span class="carousel-num">08</span>
+                </div>
+                <div class="carousel-item " data-index="7" data-cat="包装设计">
+                    <img src="static/wk-09.jpg" alt="作品 09" loading="lazy">
+                    <span class="carousel-num">09</span>
+                </div>
+                <div class="carousel-item " data-index="8" data-cat="包装设计">
+                    <img src="static/wk-10.jpg" alt="作品 10" loading="lazy">
+                    <span class="carousel-num">10</span>
+                </div>
+                <div class="carousel-item " data-index="9" data-cat="包装设计">
+                    <img src="static/wk-11.jpg" alt="作品 11" loading="lazy">
+                    <span class="carousel-num">11</span>
+                </div>
+                <div class="carousel-item " data-index="10" data-cat="包装设计">
+                    <img src="static/wk-12.jpg" alt="作品 12" loading="lazy">
+                    <span class="carousel-num">12</span>
+                </div>
+                <div class="carousel-item " data-index="11" data-cat="字体排版">
+                    <img src="static/wk-13.jpg" alt="作品 13" loading="lazy">
+                    <span class="carousel-num">13</span>
+                </div>
+                <div class="carousel-item " data-index="12" data-cat="字体排版">
+                    <img src="static/wk-14.jpg" alt="作品 14" loading="lazy">
+                    <span class="carousel-num">14</span>
+                </div>
+                <div class="carousel-item " data-index="13" data-cat="字体排版">
+                    <img src="static/wk-15.jpg" alt="作品 15" loading="lazy">
+                    <span class="carousel-num">15</span>
+                </div>
+                <div class="carousel-item " data-index="14" data-cat="字体排版">
+                    <img src="static/wk-16.jpg" alt="作品 16" loading="lazy">
+                    <span class="carousel-num">16</span>
+                </div>
+                <div class="carousel-item " data-index="15" data-cat="字体排版">
+                    <img src="static/wk-17.jpg" alt="作品 17" loading="lazy">
+                    <span class="carousel-num">17</span>
+                </div>
+                <div class="carousel-item " data-index="16" data-cat="字体排版">
+                    <img src="static/wk-18.jpg" alt="作品 18" loading="lazy">
+                    <span class="carousel-num">18</span>
+                </div>
+                <div class="carousel-item " data-index="17" data-cat="图案创作">
+                    <img src="static/wk-19.jpg" alt="作品 19" loading="lazy">
+                    <span class="carousel-num">19</span>
+                </div>
+                <div class="carousel-item " data-index="18" data-cat="图案创作">
+                    <img src="static/wk-20.jpg" alt="作品 20" loading="lazy">
+                    <span class="carousel-num">20</span>
+                </div>
+                <div class="carousel-item " data-index="19" data-cat="图案创作">
+                    <img src="static/wk-21.jpg" alt="作品 21" loading="lazy">
+                    <span class="carousel-num">21</span>
+                </div>
+                <div class="carousel-item " data-index="20" data-cat="图案创作">
+                    <img src="static/wk-22.jpg" alt="作品 22" loading="lazy">
+                    <span class="carousel-num">22</span>
+                </div>
+                <div class="carousel-item " data-index="21" data-cat="图案创作">
+                    <img src="static/wk-23.jpg" alt="作品 23" loading="lazy">
+                    <span class="carousel-num">23</span>
+                </div>
+                <div class="carousel-item " data-index="22" data-cat="图案创作">
+                    <img src="static/wk-24.jpg" alt="作品 24" loading="lazy">
+                    <span class="carousel-num">24</span>
+                </div>
+                <div class="carousel-item " data-index="23" data-cat="文创产品">
+                    <img src="static/wk-25.jpg" alt="作品 25" loading="lazy">
+                    <span class="carousel-num">25</span>
+                </div>
+                <div class="carousel-item " data-index="24" data-cat="文创产品">
+                    <img src="static/wk-26.jpg" alt="作品 26" loading="lazy">
+                    <span class="carousel-num">26</span>
+                </div>
+                <div class="carousel-item " data-index="25" data-cat="文创产品">
+                    <img src="static/wk-27.jpg" alt="作品 27" loading="lazy">
+                    <span class="carousel-num">27</span>
+                </div>
+                <div class="carousel-item " data-index="26" data-cat="文创产品">
+                    <img src="static/wk-28.jpg" alt="作品 28" loading="lazy">
+                    <span class="carousel-num">28</span>
+                </div>
+                <div class="carousel-item " data-index="27" data-cat="文创产品">
+                    <img src="static/wk-29.jpg" alt="作品 29" loading="lazy">
+                    <span class="carousel-num">29</span>
+                </div>
+                <div class="carousel-item " data-index="28" data-cat="文创产品">
+                    <img src="static/wk-30.jpg" alt="作品 30" loading="lazy">
+                    <span class="carousel-num">30</span>
+                </div>
+                <div class="carousel-item " data-index="29" data-cat="纹样应用">
+                    <img src="static/wk-31.jpg" alt="作品 31" loading="lazy">
+                    <span class="carousel-num">31</span>
+                </div>
+                <div class="carousel-item " data-index="30" data-cat="纹样应用">
+                    <img src="static/wk-32.jpg" alt="作品 32" loading="lazy">
+                    <span class="carousel-num">32</span>
+                </div>
+                <div class="carousel-item " data-index="31" data-cat="纹样应用">
+                    <img src="static/wk-33.jpg" alt="作品 33" loading="lazy">
+                    <span class="carousel-num">33</span>
+                </div>
+                <div class="carousel-item " data-index="32" data-cat="纹样应用">
+                    <img src="static/wk-34.jpg" alt="作品 34" loading="lazy">
+                    <span class="carousel-num">34</span>
+                </div>
+                <div class="carousel-item " data-index="33" data-cat="纹样应用">
+                    <img src="static/wk-35.jpg" alt="作品 35" loading="lazy">
+                    <span class="carousel-num">35</span>
+                </div>
+                <div class="carousel-item " data-index="34" data-cat="纹样应用">
+                    <img src="static/wk-36.jpg" alt="作品 36" loading="lazy">
+                    <span class="carousel-num">36</span>
+                </div>
+                <div class="carousel-item " data-index="35" data-cat="其他">
+                    <img src="static/wk-37.jpg" alt="作品 37" loading="lazy">
+                    <span class="carousel-num">37</span>
+                </div>
+                <div class="carousel-item " data-index="36" data-cat="其他">
+                    <img src="static/wk-38.jpg" alt="作品 38" loading="lazy">
+                    <span class="carousel-num">38</span>
+                </div>
+                <div class="carousel-item " data-index="37" data-cat="其他">
+                    <img src="static/wk-39.jpg" alt="作品 39" loading="lazy">
+                    <span class="carousel-num">39</span>
+                </div>
+                <div class="carousel-item " data-index="38" data-cat="其他">
+                    <img src="static/wk-40.jpg" alt="作品 40" loading="lazy">
+                    <span class="carousel-num">40</span>
+                </div>
+                <div class="carousel-item " data-index="39" data-cat="其他">
+                    <img src="static/wk-41.jpg" alt="作品 41" loading="lazy">
+                    <span class="carousel-num">41</span>
+                </div>
+                <div class="carousel-item " data-index="40" data-cat="其他">
+                    <img src="static/wk-42.jpg" alt="作品 42" loading="lazy">
+                    <span class="carousel-num">42</span>
+                </div>
+        </div>
+
+        <button class="carousel-arrow prev" onclick="prevSlide()">&#8592;</button>
+        <button class="carousel-arrow next" onclick="nextSlide()">&#8594;</button>
+
+        <div class="thumb-strip" id="thumbStrip">
+                <div class="thumb-item active" data-index="0" onclick="goToSlide(0)">
+                    <img src="static/wk-th-02.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="1" onclick="goToSlide(1)">
+                    <img src="static/wk-th-03.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="2" onclick="goToSlide(2)">
+                    <img src="static/wk-th-04.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="3" onclick="goToSlide(3)">
+                    <img src="static/wk-th-05.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="4" onclick="goToSlide(4)">
+                    <img src="static/wk-th-06.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="5" onclick="goToSlide(5)">
+                    <img src="static/wk-th-07.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="6" onclick="goToSlide(6)">
+                    <img src="static/wk-th-08.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="7" onclick="goToSlide(7)">
+                    <img src="static/wk-th-09.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="8" onclick="goToSlide(8)">
+                    <img src="static/wk-th-10.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="9" onclick="goToSlide(9)">
+                    <img src="static/wk-th-11.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="10" onclick="goToSlide(10)">
+                    <img src="static/wk-th-12.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="11" onclick="goToSlide(11)">
+                    <img src="static/wk-th-13.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="12" onclick="goToSlide(12)">
+                    <img src="static/wk-th-14.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="13" onclick="goToSlide(13)">
+                    <img src="static/wk-th-15.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="14" onclick="goToSlide(14)">
+                    <img src="static/wk-th-16.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="15" onclick="goToSlide(15)">
+                    <img src="static/wk-th-17.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="16" onclick="goToSlide(16)">
+                    <img src="static/wk-th-18.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="17" onclick="goToSlide(17)">
+                    <img src="static/wk-th-19.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="18" onclick="goToSlide(18)">
+                    <img src="static/wk-th-20.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="19" onclick="goToSlide(19)">
+                    <img src="static/wk-th-21.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="20" onclick="goToSlide(20)">
+                    <img src="static/wk-th-22.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="21" onclick="goToSlide(21)">
+                    <img src="static/wk-th-23.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="22" onclick="goToSlide(22)">
+                    <img src="static/wk-th-24.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="23" onclick="goToSlide(23)">
+                    <img src="static/wk-th-25.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="24" onclick="goToSlide(24)">
+                    <img src="static/wk-th-26.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="25" onclick="goToSlide(25)">
+                    <img src="static/wk-th-27.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="26" onclick="goToSlide(26)">
+                    <img src="static/wk-th-28.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="27" onclick="goToSlide(27)">
+                    <img src="static/wk-th-29.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="28" onclick="goToSlide(28)">
+                    <img src="static/wk-th-30.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="29" onclick="goToSlide(29)">
+                    <img src="static/wk-th-31.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="30" onclick="goToSlide(30)">
+                    <img src="static/wk-th-32.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="31" onclick="goToSlide(31)">
+                    <img src="static/wk-th-33.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="32" onclick="goToSlide(32)">
+                    <img src="static/wk-th-34.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="33" onclick="goToSlide(33)">
+                    <img src="static/wk-th-35.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="34" onclick="goToSlide(34)">
+                    <img src="static/wk-th-36.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="35" onclick="goToSlide(35)">
+                    <img src="static/wk-th-37.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="36" onclick="goToSlide(36)">
+                    <img src="static/wk-th-38.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="37" onclick="goToSlide(37)">
+                    <img src="static/wk-th-39.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="38" onclick="goToSlide(38)">
+                    <img src="static/wk-th-40.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="39" onclick="goToSlide(39)">
+                    <img src="static/wk-th-41.jpg" alt="" loading="lazy">
+                </div>
+                <div class="thumb-item " data-index="40" onclick="goToSlide(40)">
+                    <img src="static/wk-th-42.jpg" alt="" loading="lazy">
+                </div>
+        </div>
+
+        <div class="carousel-counter" id="counter">1 / 41</div>
+    </div>
+</div>
+</section>
+
+<!-- ═══════════ CONTACT ═══════════ -->
+<section id="contact">
+<div class="container">
+    <h2>Contact</h2>
+    <div class="contact-info">
+        <span>邮箱 <a href="mailto:752645430@qq.com">752645430@qq.com</a></span>
+        <span>微信 15510217722</span>
+        <span>小红书 · 文见</span>
+    </div>
+</div>
+</section>
+
+<footer><p>&copy; 2026 文见&ensp;WenJian</p></footer>
+
+<script>
+// ── NAV SCROLL ─────────────────────────────────
+window.addEventListener("scroll",()=>{
+    document.getElementById("nav").classList.toggle("scrolled",scrollY>40);
+});
+
+// ── LIGHTBOX ───────────────────────────────────
+function openLightbox(src){
+    document.getElementById("lb-img").src=src;
+    document.getElementById("lightbox").classList.add("active");
+    document.body.style.overflow="hidden";
+}
+function closeLightbox(){
+    document.getElementById("lightbox").classList.remove("active");
+    document.body.style.overflow="";
+}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeLightbox();});
+
+// ── PATTERN SCROLL: 鼠标拖拽 ────────────────────
+document.querySelectorAll(".wy-scroll").forEach(scroll=>{
+    let isDown=false,startX,scrollLeft;
+    scroll.addEventListener("mousedown",e=>{
+        isDown=true;scroll.style.cursor="grabbing";
+        startX=e.pageX-scroll.offsetLeft;scrollLeft=scroll.scrollLeft;
+    });
+    scroll.addEventListener("mouseleave",()=>{isDown=false;scroll.style.cursor="grab";});
+    scroll.addEventListener("mouseup",()=>{isDown=false;scroll.style.cursor="grab";});
+    scroll.addEventListener("mousemove",e=>{
+        if(!isDown)return;e.preventDefault();
+        const x=e.pageX-scroll.offsetLeft;
+        const walk=(x-startX)*1.5;scroll.scrollLeft=scrollLeft-walk;
+    });
+});
+
+// ── CAROUSEL ───────────────────────────────────
+let currentIndex=0;
+let currentCat="all";
+const items=document.querySelectorAll(".carousel-item");
+const thumbs=document.querySelectorAll(".thumb-item");
+const counter=document.getElementById("counter");
+
+function getVisibleItems(){
+    if(currentCat==="all")return Array.from(items);
+    return Array.from(items).filter(i=>i.dataset.cat===currentCat);
+}
+
+function updateSlide(){
+    const visible=getVisibleItems();
+    if(visible.length===0)return;
+    items.forEach(i=>i.classList.remove("active"));
+    thumbs.forEach(t=>t.classList.remove("active"));
+    const item=visible[currentIndex];
+    item.classList.add("active");
+    const globalIdx=Array.from(items).indexOf(item);
+    if(thumbs[globalIdx])thumbs[globalIdx].classList.add("active");
+    counter.textContent=`${currentIndex+1} / ${visible.length}`;
+    if(thumbs[globalIdx]){
+        thumbs[globalIdx].scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});
+    }
+    updateArrows();
+}
+
+function updateArrows(){
+    const visible=getVisibleItems();
+    document.querySelector(".carousel-arrow.prev").style.opacity=visible.length<=1?"0":"1";
+    document.querySelector(".carousel-arrow.next").style.opacity=visible.length<=1?"0":"1";
+}
+
+function nextSlide(){
+    const visible=getVisibleItems();
+    currentIndex=(currentIndex+1)%visible.length;
+    updateSlide();
+}
+function prevSlide(){
+    const visible=getVisibleItems();
+    currentIndex=(currentIndex-1+visible.length)%visible.length;
+    updateSlide();
+}
+function goToSlide(index){
+    const visible=getVisibleItems();
+    const item=items[index];
+    const visIdx=visible.indexOf(item);
+    if(visIdx>=0){currentIndex=visIdx;updateSlide();}
+}
+
+document.querySelectorAll(".cat-btn").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+        document.querySelectorAll(".cat-btn").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        currentCat=btn.dataset.cat;
+        currentIndex=0;
+        updateSlide();
+    });
+});
+document.addEventListener("keydown",e=>{
+    if(e.key==="ArrowRight")nextSlide();
+    if(e.key==="ArrowLeft")prevSlide();
+});
+
+// ── FADE IN ─────────────────────────────────────
+const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+        if(entry.isIntersecting)entry.target.classList.add("visible");
+    });
+},{threshold:.1});
+document.querySelectorAll(".fade-in,.exp-item").forEach(el=>observer.observe(el));
+
+updateSlide();
+</script>
+</body>
+</html>
